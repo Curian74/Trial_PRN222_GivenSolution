@@ -1,0 +1,39 @@
+﻿<Window x:Class="Project1.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Project1"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Grid>
+        <DataGrid Name="starGrid" 
+              HorizontalAlignment="Left" 
+              Margin="365,29,24,109" 
+              VerticalAlignment="Top" 
+              Width="411" Height="250"
+              AutoGenerateColumns="True"
+              IsReadOnly="True"/>
+        <Button Click="Button_Click" Content="Send to Server" HorizontalAlignment="Left" Margin="365,326,0,0" VerticalAlignment="Top" Height="20" Width="411"></Button>
+        <TextBlock FontSize="20" FontWeight="Bold" HorizontalAlignment="Left" Margin="28,44,0,0" TextWrapping="Wrap" Text="Star's info" VerticalAlignment="Top"/>
+        <TextBlock FontSize="15" Margin="28,76,529,336">Star name</TextBlock>
+        <TextBox Name="name" HorizontalAlignment="Left" Margin="151,79,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Height="20"/>
+        <TextBlock FontSize="15" Margin="28,118,529,292">Dob</TextBlock>
+        <DatePicker Name="dob" HorizontalAlignment="Left" Margin="151,118,0,0" VerticalAlignment="Top" Width="120" Height="25"/>
+        <TextBlock FontSize="15" Margin="28,161,513,239">Description</TextBlock>
+        <TextBox Name="desc" HorizontalAlignment="Left" Margin="151,161,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Height="20"/>
+        <TextBlock FontSize="15" Margin="28,201,513,196">Is male</TextBlock>
+        <CheckBox Name="isMale" HorizontalAlignment="Left" Margin="151,201,0,0" VerticalAlignment="Top"/>
+        <TextBlock FontSize="15" Margin="28,240,454,45" RenderTransformOrigin="0.5,0.5">
+            <TextBlock.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="-0.343"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </TextBlock.RenderTransform>Nationality</TextBlock>
+        <TextBox Name="nal" HorizontalAlignment="Left" Margin="151,239,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Height="20"/>
+        <Button Click="Add" Content="Add To list" HorizontalAlignment="Left" Margin="151,274,0,0" VerticalAlignment="Top" Height="20" Width="120"></Button>
+    </Grid>
+</Window>
