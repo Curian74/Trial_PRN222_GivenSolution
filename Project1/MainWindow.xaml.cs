@@ -1,5 +1,6 @@
 ﻿using Project1.Models;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Net.Sockets;
@@ -56,50 +57,76 @@ namespace Project1
         private async void Button_Click(object sender, RoutedEventArgs e)
         {
 
+            //try
+            //{
+            //    TcpClient client = new TcpClient("127.0.0.1", 5000);
+            //    NetworkStream stream = null;
+
+            //    JsonArray jsonArray = new JsonArray();
+
+            //    foreach (var star in list)
+            //    {
+            //        JsonObject jsonObject = new JsonObject();
+            //        jsonObject.Add("Name", star.Name);
+            //        jsonObject.Add("Dob", star.Dob);
+            //        jsonObject.Add("Description", star.Description);
+            //        jsonObject.Add("Male", star.Male);
+            //        jsonObject.Add("Nationality", star.Nationality);
+            //        jsonArray.Add(jsonObject);
+            //    }
+
+            //    Byte[] data = System.Text.Encoding.UTF8.GetBytes(jsonArray.ToString());
+
+            //    // Get a client stream for reading and writing 
+            //    stream = client.GetStream();
+
+            //    // Send the message to the connected TcpServer
+            //    stream.Write(data, 0, data.Length);
+            //    //Console.WriteLine($"Sent: {message}");
+
+            //    // Receive the TcpServer response
+            //    // Use Buffer to store the response bytes
+
+            //    data = new Byte[256];
+
+            //    // Read the first batch of the TcpServer response bytes
+            //    int bytes = stream.Read(data, 0, data.Length);
+            //    string responseData = System.Text.Encoding.ASCII.GetString(data, 0, bytes);
+            //    //Console.WriteLine($"Received: {responseData}");
+
+            //    // Shutdown and end connection
+            //    client.Close();
+
+            //    MessageBox.Show(responseData);
+            //}
+
+            //catch (Exception ex)
+            //{
+            //    MessageBox.Show(ex.Message);
+            //}
+            string serverIp = "127.0.0.1";
+            int port = 5000;
             try
             {
-                TcpClient client = new TcpClient("127.0.0.1", 5000);
-                NetworkStream stream = null;
+                using TcpClient client = new(serverIp, port);
+                using NetworkStream stream = client.GetStream();
 
-                JsonArray jsonArray = new JsonArray();
+                // send data
+                string jsonData = JsonSerializer.Serialize(list);
+                byte[] buffer = Encoding.UTF8.GetBytes(jsonData);
+                await stream.WriteAsync(buffer);
+                Console.WriteLine("List of objects sent to server.");
 
-                foreach (var star in list)
-                {
-                    JsonObject jsonObject = new JsonObject();
-                    jsonObject.Add("Name", star.Name);
-                    jsonObject.Add("Dob", star.Dob);
-                    jsonObject.Add("Description", star.Description);
-                    jsonObject.Add("Male", star.Male);
-                    jsonObject.Add("Nationality", star.Nationality);
-                    jsonArray.Add(jsonObject);
-                }
+                // process response
+                byte[] responseBuffer = new byte[1024];
+                int bytesRead = await stream.ReadAsync(responseBuffer, 0, responseBuffer.Length);
+                string response = Encoding.UTF8.GetString(responseBuffer, 0, bytesRead);
 
-                Byte[] data = System.Text.Encoding.ASCII.GetBytes(jsonArray.ToString());
+                MessageBox.Show(response);
 
-                // Get a client stream for reading and writing 
-                stream = client.GetStream();
-
-                // Send the message to the connected TcpServer
-                stream.Write(data, 0, data.Length);
-                //Console.WriteLine($"Sent: {message}");
-
-                // Receive the TcpServer response
-                // Use Buffer to store the response bytes
-
-                data = new Byte[256];
-
-                // Read the first batch of the TcpServer response bytes
-                int bytes = stream.Read(data, 0, data.Length);
-                string responseData = System.Text.Encoding.ASCII.GetString(data, 0, bytes);
-                //Console.WriteLine($"Received: {responseData}");
-
-                // Shutdown and end connection
-                client.Close();
             }
-
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
             }
         }
     }
